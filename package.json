@@ -15,6 +15,7 @@
   "bugs": {
     "url": "https://github.com/DmitriyLazarev/frontend-project-lvl2/issues"
   },
+  "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
