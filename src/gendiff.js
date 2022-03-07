@@ -17,7 +17,7 @@ const compareToString = (compare) => {
   }, []);
 
   result.unshift('{');
-  result.push('{');
+  result.push('}');
 
   return result.join('\n');
 };
