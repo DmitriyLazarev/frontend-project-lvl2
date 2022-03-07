@@ -4,7 +4,8 @@ import _ from 'lodash';
 
 const readFile = (file) => {
   const filePath = path.isAbsolute(file) ? file : path.resolve(process.cwd(), file);
-  return JSON.parse(fs.readFileSync(`${filePath}`, 'utf8'));
+  const obj = JSON.parse(fs.readFileSync(`${filePath}`, 'utf8'));
+  return [obj, Object.keys(obj)];
 };
 
 const compareToString = (compare) => {
@@ -22,35 +23,29 @@ const compareToString = (compare) => {
 };
 
 const genDiff = (file1, file2) => {
-  const file1Data = readFile(file1);
-  const file2Data = readFile(file2);
+  const [file1Data, file1Keys] = readFile(file1);
+  const [file2Data, file2Keys] = readFile(file2);
 
-  const file1Keys = Object.keys(file1Data);
-  const file2Keys = Object.keys(file2Data);
   const allKeysArray = _.sortBy(_.uniq(file1Keys.concat(file2Keys)));
 
-  const compare = allKeysArray.reduce((result, key) => {
-    const plusPrefix = '+';
-    const minusPrefix = '-';
-    const emptyPrefix = ' ';
-
-    const wasInFirstFile = { prefix: minusPrefix, key, value: file1Data[key] };
-    const wasInSecondFile = { prefix: plusPrefix, key, value: file2Data[key] };
-    const wasInBothFiles = { prefix: emptyPrefix, key, value: file1Data[key] };
+  const compare = allKeysArray.reduce((acc, key) => {
+    const wasInFirstFile = { prefix: '-', key, value: file1Data[key] };
+    const wasInSecondFile = { prefix: '+', key, value: file2Data[key] };
+    const wasInBothFiles = { prefix: ' ', key, value: file1Data[key] };
 
     if (file1Keys.includes(key) && file2Keys.includes(key)) {
       if (file1Data[key] !== file2Data[key]) {
-        result.push(wasInFirstFile);
-        result.push(wasInSecondFile);
+        acc.push(wasInFirstFile);
+        acc.push(wasInSecondFile);
       } else {
-        result.push(wasInBothFiles);
+        acc.push(wasInBothFiles);
       }
     } else if (file1Keys.includes(key) && !file2Keys.includes(key)) {
-      result.push(wasInFirstFile);
+      acc.push(wasInFirstFile);
     } else {
-      result.push(wasInSecondFile);
+      acc.push(wasInSecondFile);
     }
-    return result;
+    return acc;
   }, []);
 
   return compareToString(compare);
