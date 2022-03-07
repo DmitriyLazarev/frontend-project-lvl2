@@ -1,10 +1,17 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import _ from 'lodash';
+import yaml from 'js-yaml';
 
 const readFile = (file) => {
   const filePath = path.isAbsolute(file) ? file : path.resolve(process.cwd(), file);
-  const obj = JSON.parse(fs.readFileSync(`${filePath}`, 'utf8'));
+  const extname = path.extname(filePath);
+  let obj;
+  if (extname === '.yaml' || extname === '.yml') {
+    obj = yaml.load(fs.readFileSync(filePath, 'utf8'));
+  } else {
+    obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  }
   return [obj, Object.keys(obj)];
 };
 
