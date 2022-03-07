@@ -4,7 +4,7 @@ import _ from 'lodash';
 
 const readFile = (file) => {
   const filePath = path.isAbsolute(file) ? file : path.resolve(process.cwd(), file);
-  return fs.readFileSync(`${filePath}`, 'utf8');
+  return JSON.parse(fs.readFileSync(`${filePath}`, 'utf8'));
 };
 
 const compareToString = (compare) => {
@@ -22,8 +22,8 @@ const compareToString = (compare) => {
 };
 
 const genDiff = (file1, file2) => {
-  const file1Data = JSON.parse(readFile(file1));
-  const file2Data = JSON.parse(readFile(file2));
+  const file1Data = readFile(file1);
+  const file2Data = readFile(file2);
 
   const file1Keys = Object.keys(file1Data);
   const file2Keys = Object.keys(file2Data);
@@ -33,21 +33,23 @@ const genDiff = (file1, file2) => {
     const plusPrefix = '+';
     const minusPrefix = '-';
     const emptyPrefix = ' ';
-    let value;
+
+    const wasInFirstFile = { prefix: minusPrefix, key, value: file1Data[key] };
+    const wasInSecondFile = { prefix: plusPrefix, key, value: file2Data[key] };
+    const wasInBothFiles = { prefix: emptyPrefix, key, value: file1Data[key] };
 
     if (file1Keys.includes(key) && file2Keys.includes(key)) {
       if (file1Data[key] !== file2Data[key]) {
-        value = { prefix: minusPrefix, key, value: file1Data[key] };
-        value = { prefix: plusPrefix, key, value: file2Data[key] };
+        result.push(wasInFirstFile);
+        result.push(wasInSecondFile);
       } else {
-        value = { prefix: emptyPrefix, key, value: file1Data[key] };
+        result.push(wasInBothFiles);
       }
     } else if (file1Keys.includes(key) && !file2Keys.includes(key)) {
-      value = { prefix: minusPrefix, key, value: file1Data[key] };
+      result.push(wasInFirstFile);
     } else {
-      value = { prefix: plusPrefix, key, value: file2Data[key] };
+      result.push(wasInSecondFile);
     }
-    result.push(value);
     return result;
   }, []);
 
