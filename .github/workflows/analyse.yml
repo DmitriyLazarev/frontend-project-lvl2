@@ -10,3 +10,5 @@ jobs:
         run: npm i
       - name: ESLint check
         run: make lint
+      - name: Tests
+        run: make test
