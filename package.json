@@ -4,7 +4,7 @@
   "description": "Hexlet project lvl 2 by Dmitriy Lazarev",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -15,18 +15,22 @@
   "bugs": {
     "url": "https://github.com/DmitriyLazarev/frontend-project-lvl2/issues"
   },
-  "type": "module",
   "bin": {
     "gendiff": "bin/gendiff.js"
   },
+  "type": "module",
   "homepage": "https://github.com/DmitriyLazarev/frontend-project-lvl2#readme",
   "dependencies": {
     "commander": "^9.0.0",
     "lodash": "^4.17.21"
   },
   "devDependencies": {
+    "@jest/globals": "^27.5.1",
     "eslint": "^8.10.0",
     "eslint-config-airbnb-base": "^15.0.0",
-    "eslint-plugin-import": "^2.25.4"
+    "eslint-plugin-import": "^2.25.4",
+    "eslint-plugin-jest": "^26.1.0",
+    "jest": "^27.5.1",
+    "jest-cli": "^27.5.1"
   }
 }
