@@ -30,9 +30,9 @@ const genDiff = (file1, file2) => {
   const allKeysArray = _.sortBy(_.uniq(file1Keys.concat(file2Keys)));
 
   const compare = allKeysArray.reduce((result, key) => {
-    const plusPrefix = '+ ';
-    const minusPrefix = '- ';
-    const emptyPrefix = '  ';
+    const plusPrefix = '+';
+    const minusPrefix = '-';
+    const emptyPrefix = ' ';
     let value;
 
     if (file1Keys.includes(key) && file2Keys.includes(key)) {
