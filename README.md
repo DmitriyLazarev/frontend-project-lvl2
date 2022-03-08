@@ -9,3 +9,6 @@
 Flat JSON compare: https://asciinema.org/a/gIfM1vhM09VOnLKHj30VpjzPK
 
 Flat YAML compare: https://asciinema.org/a/VZqkFnku4nZmrvH1DdN10VPln
+
+Non-flat JSON and YAML compare: https://asciinema.org/a/x2z7Sz5nYSjQhaQ6qCuOeKVuj
+
