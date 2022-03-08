@@ -7,4 +7,5 @@
 How does it work: 
 
 Flat JSON compare: https://asciinema.org/a/gIfM1vhM09VOnLKHj30VpjzPK
+
 Flat YAML compare: https://asciinema.org/a/VZqkFnku4nZmrvH1DdN10VPln
