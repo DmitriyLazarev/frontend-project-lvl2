@@ -1,17 +1,23 @@
 import * as fs from 'fs';
 import * as path from 'path';
 import _ from 'lodash';
-import yaml from 'js-yaml';
+import yamlParser from './parsers.js';
 
 const readFile = (file) => {
   const filePath = path.isAbsolute(file) ? file : path.resolve(process.cwd(), file);
   const extname = path.extname(filePath);
   let obj;
-  if (extname === '.yaml' || extname === '.yml') {
-    obj = yaml.load(fs.readFileSync(filePath, 'utf8'));
-  } else {
-    obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  try {
+    if (extname === '.yaml' || extname === '.yml') {
+      obj = yamlParser(fs.readFileSync(filePath, 'utf8'));
+    } else {
+      obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    }
+  } catch (err) {
+    console.log(`No such file found: ${filePath}`);
+    obj = {};
   }
+
   return [obj, Object.keys(obj)];
 };
 
@@ -32,6 +38,10 @@ const compareToString = (compare) => {
 const genDiff = (file1, file2) => {
   const [file1Data, file1Keys] = readFile(file1);
   const [file2Data, file2Keys] = readFile(file2);
+
+  if (file1Data.length === 0 || file2Data.length === 0) {
+    return false;
+  }
 
   const allKeysArray = _.sortBy(_.uniq(file1Keys.concat(file2Keys)));
 
