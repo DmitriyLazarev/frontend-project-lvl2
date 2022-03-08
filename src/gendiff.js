@@ -1,71 +1,25 @@
 import * as fs from 'fs';
 import * as path from 'path';
-import _ from 'lodash';
-import yamlParser from './parsers.js';
+import checkAndParseFormat from './parser.js';
+import compareData from './compare-data.js';
+import stylish from './formatters/stylish.js';
 
 const readFile = (file) => {
   const filePath = path.isAbsolute(file) ? file : path.resolve(process.cwd(), file);
   const extname = path.extname(filePath);
-  let obj;
-  try {
-    if (extname === '.yaml' || extname === '.yml') {
-      obj = yamlParser(fs.readFileSync(filePath, 'utf8'));
-    } else {
-      obj = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    }
-  } catch (err) {
-    console.log(`No such file found: ${filePath}`);
-    obj = {};
-  }
-
-  return [obj, Object.keys(obj)];
+  return checkAndParseFormat(extname, fs.readFileSync(filePath, 'utf8'));
 };
 
-const compareToString = (compare) => {
-  const data = _.clone(compare);
-
-  const result = data.reduce((acc, item) => {
-    acc.push(`  ${item.prefix} ${item.key}: ${item.value}`);
-    return acc;
-  }, []);
-
-  result.unshift('{');
-  result.push('}');
-
-  return result.join('\n');
+const formatData = (data, format) => {
+  if (format === 'stylish') {
+    return stylish(data);
+  }
+  return null;
 };
 
-const genDiff = (file1, file2) => {
-  const [file1Data, file1Keys] = readFile(file1);
-  const [file2Data, file2Keys] = readFile(file2);
-
-  if (file1Data.length === 0 || file2Data.length === 0) {
-    return false;
-  }
-
-  const allKeysArray = _.sortBy(_.uniq(file1Keys.concat(file2Keys)));
-
-  const compare = allKeysArray.reduce((acc, key) => {
-    const wasInFirstFile = { prefix: '-', key, value: file1Data[key] };
-    const wasInSecondFile = { prefix: '+', key, value: file2Data[key] };
-    const wasInBothFiles = { prefix: ' ', key, value: file1Data[key] };
-
-    if (file1Keys.includes(key) && file2Keys.includes(key)) {
-      if (file1Data[key] !== file2Data[key]) {
-        acc.push(wasInFirstFile);
-        acc.push(wasInSecondFile);
-      } else {
-        acc.push(wasInBothFiles);
-      }
-    } else if (file1Keys.includes(key) && !file2Keys.includes(key)) {
-      acc.push(wasInFirstFile);
-    } else {
-      acc.push(wasInSecondFile);
-    }
-    return acc;
-  }, []);
-
-  return compareToString(compare);
+const genDiff = (file1, file2, format = 'stylish') => {
+  const data = compareData(readFile(file1), readFile(file2));
+  return formatData(data, format);
 };
 
 export default genDiff;
