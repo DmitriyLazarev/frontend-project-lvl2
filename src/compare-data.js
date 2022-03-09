@@ -25,7 +25,7 @@ const compareData = (data1, data2) => {
   });
 };
 
-export const getActionType = (data) => _.has(data, 'actionType') ? data.actionType : undefined;
+export const getActionType = (data) => (_.has(data, 'actionType') ? data.actionType : undefined);
 export const getKey = (data) => data.key;
 export const getValue = (data) => data.value;
 export const getRemovedValue = (data) => data.removedValue;
