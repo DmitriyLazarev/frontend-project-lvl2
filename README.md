@@ -6,9 +6,12 @@
 
 ### How does it work: 
 
-Flat JSON compare: https://asciinema.org/a/gIfM1vhM09VOnLKHj30VpjzPK
+Flat JSON Stylish format compare: https://asciinema.org/a/gIfM1vhM09VOnLKHj30VpjzPK
 
-Flat YAML compare: https://asciinema.org/a/VZqkFnku4nZmrvH1DdN10VPln
+Flat YAML Stylish format compare: https://asciinema.org/a/VZqkFnku4nZmrvH1DdN10VPln
 
-Non-flat JSON and YAML compare: https://asciinema.org/a/x2z7Sz5nYSjQhaQ6qCuOeKVuj
+Non-flat JSON and YAML Stylish format compare: https://asciinema.org/a/x2z7Sz5nYSjQhaQ6qCuOeKVuj
 
+Plain format files compare: https://asciinema.org/a/0Hr6HikI4GJGa6VPeP4eKRhtZ
+
+Json format files compare: https://asciinema.org/a/tzkS96myX3eZezWlILaClkk1Z
