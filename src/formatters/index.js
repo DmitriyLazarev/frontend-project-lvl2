@@ -1,16 +1,16 @@
-import stylish from './stylish.js';
-import plain from './plain.js';
-import json from './json.js';
+import formatDataInStylish from './stylish.js';
+import formatDataInPlain from './plain.js';
+import formatDataInJson from './json.js';
 
-const formatData = (data, format) => {
+const getFormattedData = (data, format) => {
   switch (format) {
     case 'plain':
-      return plain(data);
+      return formatDataInPlain(data);
     case 'json':
-      return json(data);
+      return formatDataInJson(data);
     default:
-      return stylish(data);
+      return formatDataInStylish(data);
   }
 };
 
-export default formatData;
+export default getFormattedData;

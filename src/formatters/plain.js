@@ -3,7 +3,7 @@ import {
   getActionType, getKey, getRemovedValue, getValue,
 } from '../compare-data.js';
 
-const itemTypeResolve = (item) => {
+const resolveItemType = (item) => {
   if (item === null) {
     return item;
   }
@@ -17,7 +17,7 @@ const itemTypeResolve = (item) => {
   }
 };
 
-const plain = (data) => {
+const formatDataInPlain = (data) => {
   const iter = (node, ancestry) => node.flatMap((item) => {
     const key = getKey(item);
     const value = getValue(item);
@@ -26,11 +26,11 @@ const plain = (data) => {
 
     switch (getActionType(item)) {
       case 'added':
-        return `Property '${newAncestry}' was added with value: ${itemTypeResolve(value)}`;
+        return `Property '${newAncestry}' was added with value: ${resolveItemType(value)}`;
       case 'removed':
         return `Property '${newAncestry}' was removed`;
       case 'updated':
-        return `Property '${newAncestry}' was updated. From ${itemTypeResolve(getRemovedValue(item))} to ${itemTypeResolve(value)}`;
+        return `Property '${newAncestry}' was updated. From ${resolveItemType(getRemovedValue(item))} to ${resolveItemType(value)}`;
       case 'compareChildren':
         return iter(value, newAncestry);
       default:
@@ -42,4 +42,4 @@ const plain = (data) => {
   return result.filter((item) => item !== '').join('\n');
 };
 
-export default plain;
+export default formatDataInPlain;

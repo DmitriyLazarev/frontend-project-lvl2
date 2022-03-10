@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-const compareData = (data1, data2) => {
+const getComparedData = (data1, data2) => {
   const sortedAllKeysArray = _.sortBy(_.uniq(Object.keys({ ...data1, ...data2 })));
 
   return sortedAllKeysArray.map((key) => {
@@ -14,7 +14,7 @@ const compareData = (data1, data2) => {
       return { actionType: 'removed', key, value: value1 };
     }
     if (_.isPlainObject(value1) && _.isPlainObject(value2)) {
-      return { actionType: 'compareChildren', key, value: compareData(value1, value2) };
+      return { actionType: 'compareChildren', key, value: getComparedData(value1, value2) };
     }
     if (!_.isEqual(value1, value2)) {
       return {
@@ -30,4 +30,4 @@ export const getKey = (data) => data.key;
 export const getValue = (data) => data.value;
 export const getRemovedValue = (data) => data.removedValue;
 
-export default compareData;
+export default getComparedData;
