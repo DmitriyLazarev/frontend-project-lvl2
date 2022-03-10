@@ -12,8 +12,6 @@ const __dirname = dirname(__filename);
 
 const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
 
-console.log();
-
 const getDiffStylishExpectedResult = getStylishFormatMockData();
 const getDiffPlainExpectedResult = getPlainFormatMockData();
 const getDiffJsonExpectedResult = getJsonFormatMockData();
