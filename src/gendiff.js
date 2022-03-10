@@ -6,11 +6,11 @@ import getFormattedData from './formatters/index.js';
 
 const readFile = (file) => {
   const filePath = path.isAbsolute(file) ? file : path.resolve(process.cwd(), file);
-  const extname = path.extname(filePath);
-  return parseData(extname, fs.readFileSync(filePath, 'utf8'));
+  const fileType = path.extname(filePath).slice(1);
+  return parseData(fs.readFileSync(filePath, 'utf8'), fileType);
 };
 
-const genDiff = (file1, file2, formatName = 'stylish') => {
+const genDiff = (file1, file2, formatName) => {
   const data = getComparedData(readFile(file1), readFile(file2));
   return getFormattedData(data, formatName);
 };
